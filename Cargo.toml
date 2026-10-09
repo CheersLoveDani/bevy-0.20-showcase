@@ -1,0 +1,42 @@
+[package]
+name = "bevy_showcase"
+version = "0.1.0"
+edition = "2024"
+description = "A runnable tour of the features introduced in Bevy 0.20"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/CheersLoveDani/bevy-0.20-showcase"
+publish = false
+
+[dependencies]
+bevy = { version = "0.20", features = [
+    "bevy_feathers",
+    "pan_orbit_camera",
+    "pan_orbit_gizmo",
+    "debug",
+] }
+rand = "0.9"
+
+[features]
+default = [
+    "demo_ui_widgets",
+    "demo_ui_layout",
+    "demo_ecs",
+    "demo_render",
+    "demo_mesh_shaders",
+]
+# Each demo group lives in `src/demos/<group>/` and can be compiled on its own.
+demo_ui_widgets = []
+demo_ui_layout = []
+demo_ecs = []
+demo_render = ["bevy/compressed_image_saver", "bevy/asset_processor"]
+# Shows an "unsupported" message at runtime on GPUs without mesh shader support.
+demo_mesh_shaders = []
+# Opt-in: needs hardware ray tracing, and slows down pipeline compilation.
+demo_solari = ["bevy/bevy_solari"]
+
+# Bevy is slow unoptimized; keep our own crate fast to compile.
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
